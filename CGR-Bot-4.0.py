@@ -1,4 +1,4 @@
-# Patron Pusher v3.0
+# CGR Bot v4.0
 # 94% ChatGPT, 6% Catoons
 
 import discord
@@ -75,6 +75,26 @@ A member of our team will get to it shortly!""")
             # Update the start time for the next reminder
             data["start_time"] = current_time
             save_reminders()
+
+
+# Event triggered when a message is sent in a channel
+@bot.event
+async def on_message(message):
+    # Define the specific channel where the bot will pin Google Docs links
+    specific_channel_id = 746003305372581918
+    
+    # Check if the message is in the specific channel and contains a Google Docs link
+    if message.channel.id == specific_channel_id and 'docs.google.com' in message.content:
+        try:
+            await message.pin()
+        except discord.errors.Forbidden:
+            await message.channel.send("I don't have permission to pin messages in this channel.")
+        except discord.errors.HTTPException:
+            await message.channel.send("Failed to pin the message due to an API error.")
+    
+    # Don't forget to process other commands
+    await bot.process_commands(message)
+
 
 # Pings the bot to see if it's still breathing
 @bot.command()
