@@ -81,7 +81,7 @@ A member of our team will get to it shortly!""")
 @bot.event
 async def on_message(message):
     # Define the specific channel where the bot will pin Google Docs links
-    specific_channel_id = 1288633281046380705
+    specific_channel_id = 746003305372581918
     
     # Check if the message is in the specific channel and contains a Google Docs link
     if message.channel.id == specific_channel_id and 'docs.google.com' in message.content:
