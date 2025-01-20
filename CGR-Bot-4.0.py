@@ -7,6 +7,9 @@ import asyncio
 import json
 import time
 
+intents = discord.Intents.all()
+intents.members = True
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 # Event triggered when a message is sent in a channel
 @bot.event
