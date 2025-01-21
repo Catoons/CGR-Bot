@@ -6,7 +6,7 @@ Reminds patrons in the CGR discord when they can submit a review request and aut
 
 !ping_cgr_bot - Bot will respond if it is active
 
-!start_reminder [user] - Starts the 6mo timer for the @user
+!set_reminder [user] - Starts the 6mo timer for the @user
 
 !cancel_reminder [user] - Cancels the 6mo reminder for the @user
 
