@@ -8,6 +8,6 @@ Reminds patrons in the CGR discord when they can submit a review request and aut
 
 !set_reminder [user] - Starts the 6mo timer for the @user
 
-!cancel_reminder [user] - Cancels the 6mo reminder for the @user
+!delete_reminder [user] - Cancels the 6mo reminder for the @user
 
 !view_reminders - See all active reminders for each user
