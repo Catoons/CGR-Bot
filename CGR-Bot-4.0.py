@@ -1,4 +1,4 @@
-# CGR Bot v4.0
+# CGR Bot v0.5
 # 94% ChatGPT, 6% Catoons
 
 import discord
