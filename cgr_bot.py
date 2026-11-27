@@ -1,9 +1,23 @@
+# Version 2026.2
+import json
+import os
+
 import discord
+
+from datetime import datetime, timedelta
+
 from discord import app_commands
 from discord.ext import commands, tasks
-import json
-from datetime import datetime, timedelta
-import asyncio
+
+DISCORD_BOT_TOKEN = os.environ["DISCORD_BOT_TOKEN"]
+READY_TO_EDIT_CHANNEL_ID = int(os.environ["READY_TO_EDIT_CHANNEL_ID"])
+
+# File to store reminders, kept in the same folder as this script
+SCRIPT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
+REMINDER_FILE = os.path.join(SCRIPT_DIRECTORY, "reminders.json")
+
+# Discord rejects messages longer than this
+DISCORD_MESSAGE_LIMIT = 2000
 
 # Intents and bot setup
 intents = discord.Intents.default()
@@ -19,12 +33,6 @@ class CGRBot(commands.Bot):
 
 
 bot = CGRBot(command_prefix="!", intents=intents)  # Prefix is unused, but commands.Bot requires one
-
-# File to store reminders
-REMINDER_FILE = "reminders.json"
-
-# Discord rejects messages longer than this
-DISCORD_MESSAGE_LIMIT = 2000
 
 # Load reminders from file
 def load_reminders():
@@ -79,6 +87,7 @@ async def set_reminder(interaction: discord.Interaction, user: discord.User):
     channel_id = interaction.channel_id
     reminders = load_reminders()
 
+# Reminders go off every 180 days
     reminders[user_id] = {
         "next_reminder": (datetime.now() + timedelta(days=180)).isoformat(),
         "channel_id": channel_id,
@@ -145,11 +154,9 @@ async def delete_reminder(interaction: discord.Interaction, user: discord.User):
 # Event triggered when a message is sent in a channel
 @bot.event
 async def on_message(message):
-    # Define the specific channel where the bot will pin Google Docs links
-    specific_channel_id = 746003305372581918
 
-    # Check if the message is in the specific channel and contains a Google Docs link
-    if message.channel.id == specific_channel_id and 'docs.google.com' in message.content:
+    # Check if the message is in the specified channel and contains a Google Docs link
+    if message.channel.id == READY_TO_EDIT_CHANNEL_ID and 'docs.google.com' in message.content:
         try:
             await message.pin()
         except discord.errors.Forbidden:
@@ -163,5 +170,4 @@ async def ping_cgr_bot(interaction: discord.Interaction):
     await interaction.response.send_message("I'm alive :)")
 
 # Run the bot
-TOKEN = ""
-bot.run(TOKEN)
+bot.run(DISCORD_BOT_TOKEN)
